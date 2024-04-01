@@ -29,6 +29,39 @@
     margin: 5px 0;
   }
 
+  .filters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .filter {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .search-container {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  select, input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  select:focus, input:focus {
+    border-color: #007bff;
+  }
+  
+
   /* styles.css */
 .search-container {
     margin-bottom: 20px;

@@ -6,11 +6,14 @@ const Users = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
+  const [domainFilter, setDomainFilter] = useState('');
+  const [genderFilter, setGenderFilter] = useState('');
+  const [availabilityFilter, setAvailabilityFilter] = useState('');
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/users?page=${currentPage}&search=${searchTerm}`);
+        const response = await fetch(`http://localhost:5000/api/users?page=${currentPage}&search=${searchTerm}&domain=${domainFilter}&gender=${genderFilter}&availability=${availabilityFilter}`);
         if (!response.ok) {
           throw new Error('Failed to fetch users');
         }
@@ -23,7 +26,7 @@ const Users = () => {
     };
 
     fetchUsers();
-  }, [currentPage, searchTerm]);
+  }, [currentPage, searchTerm, domainFilter, genderFilter, availabilityFilter]);
 
   const goToNextPage = () => {
     setCurrentPage(prevPage => Math.min(prevPage + 1, totalPages));
@@ -37,20 +40,57 @@ const Users = () => {
     setSearchTerm(event.target.value);
   };
 
+  const handleDomainChange = (event) => {
+    setDomainFilter(event.target.value);
+  };
+
+  const handleGenderChange = (event) => {
+    setGenderFilter(event.target.value);
+  };
+
+  const handleAvailabilityChange = (event) => {
+    setAvailabilityFilter(event.target.value);
+  };
+
   return (
     <div className="users-container">
       <h1>Users</h1>
+      <div className="filters">
+        <div className="filter">
+          <label htmlFor="domain-filter">Domain:</label>
+          <select id="domain-filter" value={domainFilter} onChange={handleDomainChange}>
+            <option value="">All</option>
+            <option value="Sales">Sales</option>
+            <option value="Finance">Finance</option>
+            {/* Add other domain options as needed */}
+          </select>
+        </div>
+        <div className="filter">
+          <label htmlFor="gender-filter">Gender:</label>
+          <select id="gender-filter" value={genderFilter} onChange={handleGenderChange}>
+            <option value="">All</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            {/* Add other gender options as needed */}
+          </select>
+        </div>
+        <div className="filter">
+          <label htmlFor="availability-filter">Availability:</label>
+          <select id="availability-filter" value={availabilityFilter} onChange={handleAvailabilityChange}>
+            <option value="">All</option>
+            <option value="true">Available</option>
+            <option value="false">Not Available</option>
+          </select>
+        </div>
+      </div>
       <div className="search-container">
-  <input
-    className="search-input"
-    type="text"
-    placeholder="Search by name..."
-    value={searchTerm}
-    onChange={handleSearchChange}
-  />
-  {/* You can add a search button here if needed */}
-</div>
-
+        <input
+          type="text"
+          placeholder="Search by name..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </div>
       <div className="user-cards">
         {users.map(user => (
           <div key={user.id} className="user-card">
